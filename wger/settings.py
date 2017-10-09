@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from wger.settings_global import *
+from wger.settings_global import * # noqa ignore=F405
 
 # Use 'DEBUG = True' to get more details for server errors
 DEBUG = True
-TEMPLATES[0]['OPTIONS']['debug'] = True
+TEMPLATES[0]['OPTIONS']['debug'] = True # noqa ignore=F405
 
 ADMINS = (
     ('Your name', 'your_email@example.com'),
@@ -53,7 +53,7 @@ if DEBUG:
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # Sender address used for sent emails
-WGER_SETTINGS['EMAIL_FROM'] = 'wger Workout Manager <wger@example.com>'
+WGER_SETTINGS['EMAIL_FROM'] = 'wger Workout Manager <wger@example.com>' # noqa ignore=F405
 
 # Your twitter handle, if you have one for this instance.
 # WGER_SETTINGS['TWITTER'] = ''
