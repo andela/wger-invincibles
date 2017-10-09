@@ -63,12 +63,4 @@ target/
 # External Libraries
 wger/core/static/bower_components
 node_modules
-
-venv-django/
-
-settings.py
-wger/settings.py
-package-lock.json
-
-
-.gitignore
+settings*
