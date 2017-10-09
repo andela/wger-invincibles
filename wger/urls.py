@@ -94,6 +94,7 @@ router.register(r'setting', manager_api_views.SettingViewSet, base_name='Setting
 router.register(r'workoutlog', manager_api_views.WorkoutLogViewSet, base_name='workoutlog')
 
 # Core app
+router.register(r'create-user', core_api_views.UserViewSet, base_name='user')
 router.register(r'userprofile', core_api_views.UserProfileViewSet, base_name='userprofile')
 router.register(r'language', core_api_views.LanguageViewSet, base_name='language')
 router.register(r'daysofweek', core_api_views.DaysOfWeekViewSet, base_name='daysofweek')

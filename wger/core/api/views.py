@@ -20,7 +20,10 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework.decorators import detail_route
 
+from django.utils import translation
+
 from wger.core.models import (
+    ApiUser,
     UserProfile,
     Language,
     DaysOfWeek,
@@ -35,13 +38,58 @@ from wger.core.api.serializers import (
     RepetitionUnitSerializer,
     WeightUnitSerializer
 )
-from wger.core.api.serializers import UserprofileSerializer
+from wger.gym.models import (
+    GymUserConfig,
+)
+from wger.config.models import GymConfig
+from wger.core.api.serializers import UserprofileSerializer, UserSerializer
 from wger.utils.permissions import UpdateOnlyPermission, WgerPermission
 
 
+class UserViewSet(viewsets.ModelViewSet):
+    '''
+        API endpoint for user objects
+        '''
+    is_private = True
+    serializer_class = UserSerializer
+    permission_classes = (WgerPermission, )
+    
+    def create(self, request, *args, **kwargs):
+        serialized = UserSerializer(data=request.data)
+        if serialized.is_valid():
+            user = User.objects.create_user(
+                request.POST["username"],
+                request.POST["email"],
+                request.POST["password"]
+            )
+            
+            # Pre-set some values of the user's profile
+            language = Language.objects.get(short_name=translation.get_language())
+            user.userprofile.notification_language = language
+            user.userprofile.created_with_api = True
+            
+            gym_config = GymConfig.objects.get(pk=1)
+            if gym_config.default_gym:
+                user.userprofile.gym = gym_config.default_gym
+                
+                # Create gym user configuration object
+                config = GymUserConfig()
+                config.gym = gym_config.default_gym
+                config.user = user
+                config.save()
+
+            user.userprofile.save()
+            api_user = ApiUser(user=user, create_by=request.user)
+            api_user.save()
+            return Response(serialized.data)
+        else:
+            response = {'status': 'Fail', 'message': serialized.errors}
+            return Response(response, 400)
+    
+
 class UserProfileViewSet(viewsets.ModelViewSet):
     '''
-    API endpoint for workout objects
+    API endpoint for userprofile objects
     '''
     is_private = True
     serializer_class = UserprofileSerializer
@@ -65,7 +113,6 @@ class UserProfileViewSet(viewsets.ModelViewSet):
         '''
         Return the username
         '''
-
         user = self.get_object().user
         return Response(UsernameSerializer(user).data)
 

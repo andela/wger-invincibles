@@ -9,6 +9,7 @@ __pycache__/
 .Python
 env/
 build/
+venv-django/
 develop-eggs/
 dist/
 downloads/
