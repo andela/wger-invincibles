@@ -16,7 +16,7 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': '/Users/lornatumuhairwe/D0/Simulations/wger-invincibles/wger/database.sqlite',
+        'NAME': '/Users/kibe/Andela/SIMS/wger/wger-invincibles/wger/database.sqlite',
         'USER': '',
         'PASSWORD': '',
         'HOST': '',
@@ -25,7 +25,7 @@ DATABASES = {
 }
 
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = 'o_jyba^j97+ef5wdnw3*3$ut=s&s%btmg*^lo#*^*4w81f6mt*'
+SECRET_KEY = '9f1dx$xzoefj9!x1x5a8d!f$_p)$&esdzm*g54-ahguz$zh%5m'
 
 # Your reCaptcha keys
 RECAPTCHA_PUBLIC_KEY = ''
@@ -39,7 +39,7 @@ SITE_URL = 'http://localhost:8000'
 
 # Path to uploaded files
 # Absolute filesystem path to the directory that will hold user-uploaded files.
-MEDIA_ROOT = '/Users/lornatumuhairwe/.local/share/wger/media'
+MEDIA_ROOT = '/Users/kibe/.local/share/wger/media'
 MEDIA_URL = '/media/'
 
 # Allow all hosts to access the application. Change if used in production.
