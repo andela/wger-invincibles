@@ -6,7 +6,7 @@ Coding Style Guide
 Python
 ------
 
-* Code according to PEP8 and Django codng standards
+* Code according to PEP8 and Django coding standards
 
   Check that the code is structured as per pep8 but with a maximum line
   length of 119.
