@@ -36,7 +36,7 @@ jobs:
             pip install -r requirements.txt
             
             sudo apt-get install build-essential curl git m4 ruby texinfo libbz2-dev libcurl4-openssl-dev libexpat-dev libncurses-dev zlib1g-dev
-            ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install)"
+            yes '' | ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install)"
             python --version
             export PATH="$HOME/.linuxbrew/bin:$PATH"
             export MANPATH="$HOME/.linuxbrew/share/man:$MANPATH"
