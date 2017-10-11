@@ -109,50 +109,61 @@ class NutritionPlan(models.Model):
         '''
         Sums the nutritional info of all items in the plan
         '''
-        use_metric = self.user.userprofile.use_metric
-        unit = 'kg' if use_metric else 'lb'
-        result = {'total': {'energy': 0,
-                            'protein': 0,
-                            'carbohydrates': 0,
-                            'carbohydrates_sugar': 0,
-                            'fat': 0,
-                            'fat_saturated': 0,
-                            'fibres': 0,
-                            'sodium': 0},
-                  'percent': {'protein': 0,
-                              'carbohydrates': 0,
-                              'fat': 0},
-                  'per_kg': {'protein': 0,
-                             'carbohydrates': 0,
-                             'fat': 0},
-                  }
 
-        # Energy
-        for meal in self.meal_set.select_related():
-            values = meal.get_nutritional_values(use_metric=use_metric)
-            for key in result['total'].keys():
-                result['total'][key] += values[key]
+         # Get retrieve the results from cache if they exist.
+        result = cache.get(cache_mapper.get_nutrition_cache_key(self.pk))
+        # If there is not cache you can generate the following
+        if  result:
+            return result
+        else:
+            use_metric = self.user.userprofile.use_metric
+            unit = 'kg' if use_metric else 'lb'
+            result = {'total': {'energy': 0,
+                                'protein': 0,
+                                'carbohydrates': 0,
+                                'carbohydrates_sugar': 0,
+                                'fat': 0,
+                                'fat_saturated': 0,
+                                'fibres': 0,
+                                'sodium': 0},
+                    'percent': {'protein': 0,
+                                'carbohydrates': 0,
+                                'fat': 0},
+                    'per_kg': {'protein': 0,
+                                'carbohydrates': 0,
+                                'fat': 0},
+                    }
 
-        energy = result['total']['energy']
+            # Energy
+            for meal in self.meal_set.select_related():
+                values = meal.get_nutritional_values(use_metric=use_metric)
+                for key in result['total'].keys():
+                    result['total'][key] += values[key]
 
-        # In percent
-        if energy:
-            for key in result['percent'].keys():
-                result['percent'][key] = \
-                    result['total'][key] * ENERGY_FACTOR[key][unit] / energy * 100
+            energy = result['total']['energy']
 
-        # Per body weight
-        weight_entry = self.get_closest_weight_entry()
-        if weight_entry:
-            for key in result['per_kg'].keys():
-                result['per_kg'][key] = result['total'][key] / weight_entry.weight
+            # In percent
+            if energy:
+                for key in result['percent'].keys():
+                    result['percent'][key] = \
+                        result['total'][key] * ENERGY_FACTOR[key][unit] / energy * 100
 
-        # Only 2 decimal places, anything else doesn't make sense
-        for key in result.keys():
-            for i in result[key]:
-                result[key][i] = Decimal(result[key][i]).quantize(TWOPLACES)
+            # Per body weight
+            weight_entry = self.get_closest_weight_entry()
+            if weight_entry:
+                for key in result['per_kg'].keys():
+                    result['per_kg'][key] = result['total'][key] / weight_entry.weight
 
-        return result
+            # Only 2 decimal places, anything else doesn't make sense
+            for key in result.keys():
+                for i in result[key]:
+                    result[key][i] = Decimal(result[key][i]).quantize(TWOPLACES)
+                    
+            # Save nutritional plan to cache
+            cache.set(cache_mapper.get_nutrition_cache_key(self.pk), result)
+
+            return result
+
 
     def get_closest_weight_entry(self):
         '''
@@ -198,6 +209,15 @@ class NutritionPlan(models.Model):
         # even more
         else:
             return 4
+
+# @receiver(post_delete, sender=NutritionPlan)
+# def save_cache_dict(sender, instance, **kwargs):
+#     """
+#     Signal: post_delete
+#     Sender: NutritionPlan
+#     Delete nutrition_plan_info cache
+#     """
+#    cache.delete("nutrition_plan_info-{0}".format(instance.id))
 
 
 @python_2_unicode_compatible
