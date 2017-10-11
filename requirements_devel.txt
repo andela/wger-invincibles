@@ -9,3 +9,6 @@
 pep8
 django-debug-toolbar
 coverage
+flake8
+autopep8
+autoflake
