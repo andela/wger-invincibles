@@ -35,6 +35,9 @@ jobs:
             . venv/bin/activate
             pip install -r requirements.txt
             
+            sudo apt-get update
+            sudo apt-get install nodejs
+            sudo apt-get install npm
             # sudo apt-get install build-essential curl git m4 ruby texinfo libbz2-dev libcurl4-openssl-dev libexpat-dev libncurses-dev zlib1g-dev
             # yes '' | ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install)"
             # python --version
@@ -42,10 +45,10 @@ jobs:
             # export MANPATH="$HOME/.linuxbrew/share/man:$MANPATH"
             # export INFOPATH="$HOME/.linuxbrew/share/info:$INFOPATH"
             # brew install node
-            # npm -v
+            npm -v
 
-            # invoke create-settings --settings-path ./settings.py --database-path ./database.sqlite
-            # invoke bootstrap-wger --settings-path ./settings.py --no-start-server
+            invoke create-settings --settings-path ./settings.py --database-path ./database.sqlite
+            invoke bootstrap-wger --settings-path ./settings.py --no-start-server
 
       # - run:
       #     command: 
