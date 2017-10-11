@@ -4,11 +4,12 @@ __pycache__/
 
 # C extensions
 *.so
-
+# migrations/
 # Distribution / packaging
 .Python
 env/
 build/
+venv-django/
 develop-eggs/
 dist/
 downloads/
