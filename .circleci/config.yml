@@ -33,7 +33,13 @@ jobs:
             python3 -m venv venv
             . venv/bin/activate
             pip install -r requirements.txt
+            
+            sudo apt-get update
+            sudo apt-get install nodejs
+            sudo apt-get install npm
 
+            invoke create-settings --settings-path ./settings.py --database-path ./database.sqlite
+            invoke bootstrap-wger --settings-path ./settings.py --no-start-server
       - save_cache:
           paths:
             - ./venv
@@ -44,7 +50,7 @@ jobs:
           name: run tests
           command: |
             . venv/bin/activate
-            python manage.py test
+            python manage.py test --parallel
 
       - store_artifacts:
           path: test-reports
