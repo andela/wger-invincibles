@@ -35,23 +35,12 @@ jobs:
             . venv/bin/activate
             pip install -r requirements.txt
             
-            # sudo apt-get install build-essential curl git m4 ruby texinfo libbz2-dev libcurl4-openssl-dev libexpat-dev libncurses-dev zlib1g-dev
-            # yes '' | ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install)"
-            # python --version
-            # export PATH="$HOME/.linuxbrew/bin:$PATH"
-            # export MANPATH="$HOME/.linuxbrew/share/man:$MANPATH"
-            # export INFOPATH="$HOME/.linuxbrew/share/info:$INFOPATH"
-            # brew install node
-            # npm -v
+            sudo apt-get update
+            sudo apt-get install nodejs
+            sudo apt-get install npm
 
-            # invoke create-settings --settings-path ./settings.py --database-path ./database.sqlite
-            # invoke bootstrap-wger --settings-path ./settings.py --no-start-server
-
-      # - run:
-      #     command: 
-      #     invoke create_settings --settings-path wger/settings.py --database-path wger/database.sqlite
-      #     invoke bootstrap_wger --settings-path wger/settings.py --no-start-server
-
+            invoke create-settings --settings-path ./settings.py --database-path ./database.sqlite
+            invoke bootstrap-wger --settings-path ./settings.py --no-start-server
       - save_cache:
           paths:
             - ./venv
@@ -62,7 +51,7 @@ jobs:
           name: run tests
           command: |
             . venv/bin/activate
-            # python manage.py test
+            python manage.py test --parallel
 
       - store_artifacts:
           path: test-reports
