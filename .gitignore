@@ -68,7 +68,6 @@ venv-django/
 
 settings.py
 wger/settings.py
-wger/settings_global.py
 package-lock.json
 
 
