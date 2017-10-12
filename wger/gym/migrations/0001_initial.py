@@ -6,7 +6,7 @@ from django.conf import settings
 import wger.gym.models
 
 
-class Migration(migrations.Migration):
+class Migration(migrations.Migration): 
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
