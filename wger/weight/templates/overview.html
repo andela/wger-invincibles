@@ -29,6 +29,12 @@
 </p>
 {% endif %}
 
+{% if user_name %}
+<p>
+    FitBit Data for:  Me
+</p>
+{% endif %}
+
 <div id="weight_diagram"></div>
 
 
@@ -108,6 +114,12 @@
             <a href="{% url 'weight:import-csv' %}" {% auto_link_css flavour %}>
                 <span class="{% fa_class 'upload' %}"></span>
                 {% trans "Import from spreadsheet" %}
+            </a>
+        </li>
+        <li>
+            <a href="{% url 'fitbit' %}">
+                <span class="{% fa_class 'upload' %}"></span>
+                {% trans "Import from Fitbit" %}
             </a>
         </li>
     </ul>

@@ -29,3 +29,4 @@ django-cors-headers
 # Python3 compatibility
 six
 whitenoise==3.3.1
+fitbit==0.3.0
