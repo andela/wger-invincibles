@@ -53,7 +53,7 @@ class UserViewSet(viewsets.ModelViewSet):
     is_private = True
     serializer_class = UserSerializer
     permission_classes = (WgerPermission, )
-    
+
     def create(self, request, *args, **kwargs):
         serialized = UserSerializer(data=request.data)
         if serialized.is_valid():
@@ -62,16 +62,16 @@ class UserViewSet(viewsets.ModelViewSet):
                 request.POST["email"],
                 request.POST["password"]
             )
-            
+
             # Pre-set some values of the user's profile
             language = Language.objects.get(short_name=translation.get_language())
             user.userprofile.notification_language = language
             user.userprofile.created_with_api = True
-            
+
             gym_config = GymConfig.objects.get(pk=1)
             if gym_config.default_gym:
                 user.userprofile.gym = gym_config.default_gym
-                
+
                 # Create gym user configuration object
                 config = GymUserConfig()
                 config.gym = gym_config.default_gym
@@ -85,7 +85,7 @@ class UserViewSet(viewsets.ModelViewSet):
         else:
             response = {'status': 'Fail', 'message': serialized.errors}
             return Response(response, 400)
-    
+
 
 class UserProfileViewSet(viewsets.ModelViewSet):
     '''

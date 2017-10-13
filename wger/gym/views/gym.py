@@ -111,26 +111,34 @@ class GymUserListView(LoginRequiredMixin, WgerMultiplePermissionRequiredMixin, L
 
         # admins list
         for u in Gym.objects.get_admins(self.kwargs['pk']):
-            out['admins'].append({'obj': u,
-                                         'perms': {'manage_gym': u.has_perm('gym.manage_gym'),
-                                                   'manage_gyms': u.has_perm('gym.manage_gyms'),
-                                                   'gym_trainer': u.has_perm('gym.gym_trainer'),
-                                                   'any_admin': is_any_gym_admin(u)}
-                                         })
+            out['admins'].append({
+                'obj': u,
+                'perms': {
+                    'manage_gym': u.has_perm('gym.manage_gym'),
+                    'manage_gyms': u.has_perm('gym.manage_gyms'),
+                    'gym_trainer': u.has_perm('gym.gym_trainer'),
+                    'any_admin': is_any_gym_admin(u)
+                }
+            })
             if u.is_active:
                 out['active_admins'].append({'obj': u,
-                                      'perms': {'manage_gym': u.has_perm('gym.manage_gym'),
+                                            'perms': {
+                                                'manage_gym': u.has_perm('gym.manage_gym'),
                                                 'manage_gyms': u.has_perm('gym.manage_gyms'),
                                                 'gym_trainer': u.has_perm('gym.gym_trainer'),
-                                                'any_admin': is_any_gym_admin(u)}
-                                      })
+                                                'any_admin': is_any_gym_admin(u)
+                                            }
+                })
             else:
-                out['inactive_admins'].append({'obj': u,
-                                             'perms': {'manage_gym': u.has_perm('gym.manage_gym'),
-                                                       'manage_gyms': u.has_perm('gym.manage_gyms'),
-                                                       'gym_trainer': u.has_perm('gym.gym_trainer'),
-                                                       'any_admin': is_any_gym_admin(u)}
-                                             })
+                out['inactive_admins'].append({
+                    'obj': u,
+                    'perms': {
+                        'manage_gym': u.has_perm('gym.manage_gym'),
+                        'manage_gyms': u.has_perm('gym.manage_gyms'),
+                        'gym_trainer': u.has_perm('gym.gym_trainer'),
+                        'any_admin': is_any_gym_admin(u)
+                    }
+                })
         return out
 
     def get_context_data(self, **kwargs):
