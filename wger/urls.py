@@ -41,6 +41,7 @@ from wger.core.api import views as core_api_views
 from wger.exercises.api import views as exercises_api_views
 from wger.nutrition.api import views as nutrition_api_views
 from wger.weight.api import views as weight_api_views
+from wger.core.views.user import allow_fitbit
 
 #
 # REST API
@@ -159,7 +160,8 @@ urlpatterns += [
         name='robots'),
     url(r'^manifest\.webapp$', WebappManifestView.as_view(template_name="manifest.webapp")),
     url(r'^amazon-manifest\.webapp$', WebappManifestView.as_view(template_name="amazon-manifest.webapp")),
-
+    # fitbit page
+    url(r'^en/fitbit/', allow_fitbit, name='fitbit'),
     # API
     url(r'^api/', include(v1_api.urls)),
     url(r'^api/v2/exercise/search/$',
