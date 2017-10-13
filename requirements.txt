@@ -27,4 +27,5 @@ django-tastypie
 django-cors-headers
 
 # Python3 compatibility
-sixwhitenoise==3.3.1
+six
+whitenoise==3.3.1
