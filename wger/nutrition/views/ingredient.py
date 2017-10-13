@@ -18,6 +18,7 @@ import logging
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect, HttpResponseForbidden
 from django.core import mail
+from django.utils import translation
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.core.cache import cache
 from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
@@ -40,6 +41,7 @@ from wger.utils.generic_views import (
 from wger.utils.constants import PAGINATION_OBJECTS_PER_PAGE
 from wger.utils.language import load_language, load_ingredient_languages
 from wger.utils.cache import cache_mapper
+from wger.core.models import Language
 
 
 logger = logging.getLogger(__name__)
@@ -57,16 +59,40 @@ class IngredientListView(ListView):
     context_object_name = 'ingredients_list'
     paginate_by = PAGINATION_OBJECTS_PER_PAGE
 
-    def get_queryset(self):
+    def get(self, request, *args, **kwargs):
+        language = request.GET.get('lang')
+        self.object_list = self.get_queryset()
+        context = self.get_context_data()
+        
+        if not language:
+            context['ingredients_list'] = self.object_list
+            used_language = translation.get_language().split('-')[0]
+            context['shown_language'] = used_language
+        else:     
+            language_object = Language.objects.get(short_name=language)
+            filtered_ingredients = self.get_queryset(language)
+            context['shown_language'] = language
+            if not filtered_ingredients:
+                context['ingredients_list'] = self.object_list
+            else:
+                context['ingredients_list'] = filtered_ingredients
+        return self.render_to_response(context)
+
+    def get_queryset(self, language=None):
         '''
         Filter the ingredients the user will see by its language
 
         (the user can also want to see ingredients in English, in addition to his
         native language, see load_ingredient_languages)
         '''
+        if language:
+            language_object = Language.objects.get(short_name=language)
+            return (Ingredient.objects.filter(status__in=Ingredient.INGREDIENT_STATUS_OK)
+                                .filter(language=language_object.id)
+                                .only('id', 'name'))
+
         languages = load_ingredient_languages(self.request)
-        return (Ingredient.objects.filter(language__in=languages)
-                                  .filter(status__in=Ingredient.INGREDIENT_STATUS_OK)
+        return (Ingredient.objects.filter(status__in=Ingredient.INGREDIENT_STATUS_OK)
                                   .only('id', 'name'))
 
     def get_context_data(self, **kwargs):
@@ -74,6 +100,8 @@ class IngredientListView(ListView):
         Pass additional data to the template
         '''
         context = super(IngredientListView, self).get_context_data(**kwargs)
+        all_languages = Language.objects.all()
+        context['all_languages'] = all_languages
         context['show_shariff'] = True
         return context
 
