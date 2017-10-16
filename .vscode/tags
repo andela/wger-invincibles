@@ -4795,13 +4795,13 @@ models	../wger/manager/models.py	/^from django.db import models$/;"	kind:namespa
 models	../wger/manager/views/schedule_step.py	/^from django.db import models$/;"	kind:namespace	line:22
 models	../wger/manager/views/set.py	/^from django.db import models$/;"	kind:namespace	line:24
 models	../wger/nutrition/migrations/0001_initial.py	/^from django.db import models, migrations$/;"	kind:namespace	line:4
+<<<<<<< HEAD
 models	../wger/nutrition/migrations/0002_auto_20171009_1900.py	/^from django.db import migrations, models$/;"	kind:namespace	line:5
 models	../wger/nutrition/migrations/0002_auto_20171010_1139.py	/^from django.db import migrations, models$/;"	kind:namespace	line:5
 models	../wger/nutrition/migrations/0002_auto_20171013_1111.py	/^from django.db import migrations, models$/;"	kind:namespace	line:5
+models	../wger/nutrition/migrations/0002_auto_20171010_1139.py	/^from django.db import migrations, models$/;"	kind:namespace	line:5
+>>>>>>> 367e8f2297ff803606cc4065b1aa351d573b88ab
 models	../wger/nutrition/models.py	/^from django.db import models$/;"	kind:namespace	line:20
-models	../wger/nutrition/tests/test_nutritional_calculations.py	/^from wger.nutrition import models$/;"	kind:namespace	line:20
-models	../wger/utils/fields.py	/^from django.db import models$/;"	kind:namespace	line:17
-models	../wger/utils/managers.py	/^from django.db import models$/;"	kind:namespace	line:16
 models	../wger/utils/models.py	/^from django.db import models$/;"	kind:namespace	line:17
 models	../wger/weight/migrations/0001_initial.py	/^from django.db import models, migrations$/;"	kind:namespace	line:4
 models	../wger/weight/migrations/0002_auto_20150604_2139.py	/^from django.db import models, migrations$/;"	kind:namespace	line:4
