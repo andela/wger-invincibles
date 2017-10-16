@@ -227,7 +227,6 @@ def load_fixtures(context, settings_path=None):
     # Find the path to the settings and setup the django environment
     setup_django_environment(settings_path)
 
-
     # os.chdir(os.path.dirname(inspect.stack()[0][1]))
     # current_dir = os.path.join(os.getcwd(), 'wger')
     current_dir = os.path.dirname(os.path.abspath(__file__))

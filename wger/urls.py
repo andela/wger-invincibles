@@ -47,7 +47,7 @@ from wger.core.views.user import allow_fitbit
 # REST API
 #
 
-### /api/v1 - tastypie - deprecated
+# /api/v1 - tastypie - deprecated
 v1_api = Api(api_name='v1')
 
 v1_api.register(exercises_api.ExerciseCategoryResource())
@@ -81,7 +81,7 @@ v1_api.register(core_api.UserProfileResource())
 v1_api.register(core_api.LicenseResource())
 
 
-### /api/v2 - django rest framework
+# /api/v2 - django rest framework
 router = routers.DefaultRouter()
 
 # Manager app
@@ -114,7 +114,8 @@ router.register(r'muscle', exercises_api_views.MuscleViewSet, base_name='muscle'
 # Nutrition app
 router.register(r'ingredient', nutrition_api_views.IngredientViewSet, base_name='api-ingredient')
 router.register(r'weightunit', nutrition_api_views.WeightUnitViewSet, base_name='weightunit')
-router.register(r'ingredientweightunit', nutrition_api_views.IngredientWeightUnitViewSet, base_name='ingredientweightunit')
+router.register(r'ingredientweightunit', nutrition_api_views.IngredientWeightUnitViewSet,
+                base_name='ingredientweightunit')
 router.register(r'nutritionplan', nutrition_api_views.NutritionPlanViewSet, base_name='nutritionplan')
 router.register(r'meal', nutrition_api_views.MealViewSet, base_name='meal')
 router.register(r'mealitem', nutrition_api_views.MealItemViewSet, base_name='mealitem')

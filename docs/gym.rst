@@ -16,7 +16,7 @@ different administrative roles:
 
 Except for general managers, administrative users belong to a single gym (the
 one they were created in) and can access only those members. This setting cannot
-be changed later. The user's gym appears in the in the top right menu (with the
+be changed later. The user's gym appears in the top right menu (with the
 user's name).
 
 .. note:: If the installation is used for a single gym only, you can set the
