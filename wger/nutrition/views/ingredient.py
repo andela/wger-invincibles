@@ -59,25 +59,6 @@ class IngredientListView(ListView):
     context_object_name = 'ingredients_list'
     paginate_by = PAGINATION_OBJECTS_PER_PAGE
 
-    def get(self, request, *args, **kwargs):
-        language = request.GET.get('lang')
-        self.object_list = self.get_queryset()
-        context = self.get_context_data()
-        
-        if not language:
-            context['ingredients_list'] = self.object_list
-            used_language = translation.get_language().split('-')[0]
-            context['shown_language'] = used_language
-        else:     
-            language_object = Language.objects.get(short_name=language)
-            filtered_ingredients = self.get_queryset(language)
-            context['shown_language'] = language
-            if not filtered_ingredients:
-                context['ingredients_list'] = self.object_list
-            else:
-                context['ingredients_list'] = filtered_ingredients
-        return self.render_to_response(context)
-
     def get_queryset(self, language=None):
         '''
         Filter the ingredients the user will see by its language
@@ -85,14 +66,19 @@ class IngredientListView(ListView):
         (the user can also want to see ingredients in English, in addition to his
         native language, see load_ingredient_languages)
         '''
+        language = self.request.GET.get('lang')
         if language:
             language_object = Language.objects.get(short_name=language)
-            return (Ingredient.objects.filter(status__in=Ingredient.INGREDIENT_STATUS_OK)
+            filtered_ingredients = (Ingredient.objects.filter(status__in=Ingredient.INGREDIENT_STATUS_OK)
                                 .filter(language=language_object.id)
                                 .only('id', 'name'))
+            
+            if filtered_ingredients:
+                return filtered_ingredients
 
         languages = load_ingredient_languages(self.request)
-        return (Ingredient.objects.filter(status__in=Ingredient.INGREDIENT_STATUS_OK)
+        return (Ingredient.objects.filter(language__in=languages)
+                                  .filter(status__in=Ingredient.INGREDIENT_STATUS_OK)
                                   .only('id', 'name'))
 
     def get_context_data(self, **kwargs):
@@ -101,6 +87,12 @@ class IngredientListView(ListView):
         '''
         context = super(IngredientListView, self).get_context_data(**kwargs)
         all_languages = Language.objects.all()
+        language = self.request.GET.get('lang')
+        if language: 
+            context['shown_language'] = language
+        else:
+            used_language = translation.get_language().split('-')[0]
+            context['shown_language'] = used_language
         context['all_languages'] = all_languages
         context['show_shariff'] = True
         return context
