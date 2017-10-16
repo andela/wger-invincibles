@@ -77,7 +77,8 @@ class IngredientListView(ListView):
                 return filtered_ingredients
 
         languages = load_ingredient_languages(self.request)
-        return (Ingredient.objects.filter(status__in=Ingredient.INGREDIENT_STATUS_OK)
+        return (Ingredient.objects.filter(language__in=languages)
+                                  .filter(status__in=Ingredient.INGREDIENT_STATUS_OK)
                                   .only('id', 'name'))
 
     def get_context_data(self, **kwargs):
