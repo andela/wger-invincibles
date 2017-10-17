@@ -608,7 +608,7 @@ class MealItem(models.Model):
         Returns the object that has owner information
         '''
         return self.meal.plan
-
+    
     def get_unit_type(self):
         '''
         Returns the type of unit used:
