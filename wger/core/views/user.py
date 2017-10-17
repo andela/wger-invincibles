@@ -15,8 +15,13 @@
 # You should have received a copy of the GNU Affero General Public License
 
 import logging
+import urllib
+import datetime
+from datetime import date
+import requests
+from wger.weight import fitbit
 
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponseRedirect, HttpResponseForbidden
 from django.template.context_processors import csrf
 from django.core.urlresolvers import reverse
@@ -63,6 +68,8 @@ from wger.gym.models import (
     GymUserConfig,
     Contract
 )
+
+#from fitbit import FitbitOauth2Client
 
 logger = logging.getLogger(__name__)
 
@@ -529,3 +536,36 @@ class UserListView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
                                           _('Gym')],
                                  'users': context['object_list']['members']}
         return context
+
+
+@login_required
+def allow_fitbit(request):
+    z = fitbit.Fitbit()
+    access_code = request.GET.get("code", None)
+    if access_code:
+        template_data = {}
+        token = z.GetAccessToken(access_code)
+        user_details = z.ApiCall(token, '/1/user/-/profile.json')
+        start_date = datetime.date.today() + datetime.timedelta(-30)
+        start_date = start_date.strftime('%Y-%m-%d')
+        end_date = datetime.datetime.today().strftime('%Y-%m-%d')
+        weight_logs = z.ApiCall(token, '/1/user/-/body/log/weight/date/' + start_date + '/' + end_date + '.json')
+        try:
+            for weight in weight_logs['weight']:
+                entry = WeightEntry()
+                entry.weight = weight['weight']
+                entry.user = request.user
+                entry.date = datetime.datetime.strptime(weight['date'],
+                                                        '%Y-%m-%d')
+                entry.save()
+                print (weight['weight'], weight['date'])
+        except Exception as error:
+            print (error)
+            if "UNIQUE constraint failed" in str(error):
+                messages.info(request, _('Already synced up for today.'))
+            else:
+                messages.warning(request, _('Couldnt sync the weight data.'))
+        messages.info(request, _('FitBit Weight for: '+ user_details['user']['fullName']))
+        return redirect('/en/weight/overview/'+ str(request.user), template_data)
+    auth_url = z.GetAuthorizationUri()
+    return redirect(auth_url)

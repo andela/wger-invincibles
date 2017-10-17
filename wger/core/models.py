@@ -34,6 +34,15 @@ from wger.weight.models import WeightEntry
 
 
 @python_2_unicode_compatible
+class ApiUser(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    create_by = models.ForeignKey(User, related_name='referee')
+
+    def __str__(self):
+        return self.user.username
+
+
+@python_2_unicode_compatible
 class Language(models.Model):
     '''
     Language of an item (exercise, workout, etc.)
@@ -107,6 +116,16 @@ class UserProfile(models.Model):
                                 editable=False)
     '''
     The user
+    '''
+
+    created_with_api = models.BooleanField(verbose_name=_('User Created by Third party application or User'),
+                                           default=False,
+                                           help_text=_(
+                                               'Check to show user was created by another user or by an application'
+                                               'throught an API'),
+                                           )
+    '''
+    Flag to mark a user if created via api
     '''
 
     gym = models.ForeignKey(Gym,
@@ -348,8 +367,8 @@ by the US Department of Agriculture. It is extremely complete, with around
         Make sure the total amount of hours is 24
         '''
         if ((self.sleep_hours and self.freetime_hours and self.work_hours)
-           and (self.sleep_hours + self.freetime_hours + self.work_hours) > 24):
-                raise ValidationError(_('The sum of all hours has to be 24'))
+                and (self.sleep_hours + self.freetime_hours + self.work_hours) > 24):
+            raise ValidationError(_('The sum of all hours has to be 24'))
 
     def __str__(self):
         '''

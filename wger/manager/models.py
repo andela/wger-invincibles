@@ -530,7 +530,7 @@ class Day(models.Model):
         return {'obj': self,
                 'days_of_week': {
                     'text': u', '.join([six.text_type(_(i.day_of_week))
-                                       for i in tmp_days_of_week]),
+                                        for i in tmp_days_of_week]),
                     'day_list': tmp_days_of_week},
                 'muscles': {
                     'back': muscles_back,
@@ -738,17 +738,9 @@ class WorkoutLog(models.Model):
         '''
         return self
 
-    def get_workout_session(self, date=None):
-        '''
-        Returns the corresponding workout session
-
-        :return the WorkoutSession object or None if nothing was found
-        '''
-        if not date:
-            date = self.date
-
+    def get_workout_session(self):
         try:
-            return WorkoutSession.objects.filter(user=self.user).get(date=date)
+            return WorkoutSession.objects.filter(user=self.user).get(workoutlog=self)
         except WorkoutSession.DoesNotExist:
             return None
 
@@ -802,6 +794,9 @@ class WorkoutSession(models.Model):
     '''
     The workout the session belongs to
     '''
+    
+    workoutlog = models.ForeignKey(WorkoutLog, blank=True, null=True, related_name='workoutlog')
+    '''The workoutlog the session belongs'''
 
     date = Html5DateField(verbose_name=_('Date'))
     '''
