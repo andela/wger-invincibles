@@ -1590,7 +1590,8 @@
             "category": 8,
             "uuid": "c56078d2-ae85-4524-a467-d1e143b6df1a",
             "muscles": [
-                1
+                1,
+                19
             ],
             "license": 1,
             "name": "Biceps curls with barbell"
@@ -1687,7 +1688,8 @@
             "category": 8,
             "uuid": "38919515-ce04-4383-9c3f-5846edd0e844",
             "muscles": [
-                1
+                1,
+                19
             ],
             "license": 1,
             "name": "Biceps curls with SZ-bar"
@@ -1711,7 +1713,8 @@
             "category": 8,
             "uuid": "48a59aa8-4568-409c-8afe-f8cb99c558ea",
             "muscles": [
-                1
+                1,
+                19
             ],
             "license": 1,
             "name": "Biceps curls with dumbbell"
@@ -1773,7 +1776,8 @@
             "description": "<p>Hold the SZ-bar and lay down on a flat bench in such a way that around 1/4 of your head is over the edge. Stretch your arms with the bar and bend them so that the bar is lowered. Just before it touches your forehead, push it up.</p>\n<p>Pay attention to your elbows and arms: only the triceps are doing the work, the rest of the arms should not move.</p>",
             "equipment": [
                 8,
-                2
+                2,
+                18
             ],
             "creation_date": null,
             "category": 8,
@@ -1796,13 +1800,16 @@
             "description": "<p>Hold the dumbbells and lay down on a flat bench in such a way that around 1/4 of your head is over the edge. Stretch your arms with the weights and bend them so that the dumbbells are lowered (make sure they don't touch each other). Just before they touch your forehead, push them up.</p>\n<p>Pay attention to your elbows and arms: only the triceps are doing the work, the rest of the arms should not move.</p>",
             "equipment": [
                 8,
-                3
+                3,
+                18,
+                17
             ],
             "creation_date": null,
             "category": 8,
             "uuid": "ee00d53e-4482-44aa-b780-bbc570061841",
             "muscles": [
-                5
+                5,
+                17
             ],
             "license": 1,
             "name": "French press (skullcrusher) dumbbells"
@@ -1824,7 +1831,8 @@
             "category": 8,
             "uuid": "6dcc9adb-939c-4581-9e44-d0d73753997b",
             "muscles": [
-                1
+                1,
+                17
             ],
             "license": 1,
             "name": "Hammercurls"
@@ -1844,7 +1852,8 @@
             "category": 8,
             "uuid": "d147a6c2-ce64-424b-baf3-4ca841a51512",
             "muscles": [
-                1
+                1,
+                17
             ],
             "license": 1,
             "name": "Dumbbells on scott machine"
@@ -2041,7 +2050,8 @@
             "category": 11,
             "uuid": "0ec76f5d-1311-4d6d-bf79-00fa17c3061a",
             "muscles": [
-                4
+                4,
+                17
             ],
             "license": 1,
             "name": "Benchpress dumbbells"
@@ -2127,7 +2137,8 @@
             "category": 11,
             "uuid": "80d318b3-4b8a-41aa-9c6c-0a2a921fe1e6",
             "muscles": [
-                4
+                4,
+                17
             ],
             "license": 1,
             "name": "Decline bench press dumbbell"
@@ -2410,7 +2421,8 @@
             "category": 9,
             "uuid": "ffd4ce7e-e14f-49d4-9dc9-dc1362631382",
             "muscles": [
-                10
+                10,
+                17
             ],
             "license": 1,
             "name": "Dumbbell lunges walking"
@@ -2578,7 +2590,8 @@
             "category": 13,
             "uuid": "1df6a1b5-7bd2-402f-9d5e-94f9ed6d8b54",
             "muscles": [
-                2
+                2,
+                17
             ],
             "license": 1,
             "name": "Shoulder press, dumbbells"
@@ -2709,7 +2722,8 @@
             "category": 8,
             "uuid": "8c6c1544-cbf8-403c-ae12-b27b392702f8",
             "muscles": [
-                1
+                1,
+                19
             ],
             "license": 1,
             "name": "Biceps curl with cable"
@@ -2880,7 +2894,8 @@
             "category": 8,
             "uuid": "5baf40e5-ea3c-4f8d-b60a-d294ee2de55b",
             "muscles": [
-                1
+                1,
+                19 
             ],
             "license": 1,
             "name": "Hammercurls on cable"
@@ -2900,7 +2915,8 @@
             "category": 8,
             "uuid": "88bbdbde-c9b6-45a1-aee9-efc6f02cfab3",
             "muscles": [
-                5
+                5,
+                18
             ],
             "license": 1,
             "name": "Triceps machine"
@@ -3032,7 +3048,8 @@
             "category": 11,
             "uuid": "754391c6-39d5-4bb6-a311-68a520f6fd3a",
             "muscles": [
-                4
+                4,
+                17
             ],
             "license": 1,
             "name": "Fly with dumbbells"
@@ -3054,7 +3071,8 @@
             "category": 11,
             "uuid": "acf1f2df-46c4-49a3-8e6c-2979ea4204b1",
             "muscles": [
-                4
+                4,
+                17
             ],
             "license": 1,
             "name": "Fly with dumbbells, decline bench"
@@ -3163,7 +3181,8 @@
             "category": 13,
             "uuid": "ee61aef0-f0c7-4a7a-882a-3b39312dfffd",
             "muscles": [
-                2
+                2,
+                17
             ],
             "license": 1,
             "name": "Shrugs, dumbbells"
@@ -3379,7 +3398,8 @@
             "category": 8,
             "uuid": "5a29197f-e159-4a98-9b40-534c41ab34a1",
             "muscles": [
-                5
+                5,
+                18
             ],
             "license": 1,
             "name": "Triceps dips"
@@ -3732,7 +3752,8 @@
             "category": 8,
             "uuid": "1855c71b-b005-4615-b90c-b2fed8e10342",
             "muscles": [
-                5
+                5,
+                18
             ],
             "license": 1,
             "name": "Triceps bench press one barbell"
@@ -3887,7 +3908,8 @@
             "category": 8,
             "uuid": "84b4e711-8b29-4541-ad58-dad967f82390",
             "muscles": [
-                13
+                13,
+                19
             ],
             "license": 1,
             "name": "Preacher Curls"
@@ -4151,7 +4173,8 @@
             "description": "<p>Use inclined bench. Hold dumbbells straight out to your sides, elbows slightly bent. Bring arms together above you, keeping angle of elbows fixed.</p>",
             "equipment": [
                 3,
-                9
+                9,
+                17
             ],
             "creation_date": "2014-01-15",
             "category": 11,
@@ -4634,7 +4657,9 @@
             ],
             "description": "<p>The military press is a variation of the overhead press weight training exercise using very strict form and no pre-movement momentum.The military press targets the deltoid muscles in the shoulders as well as the triceps. Additionally, it works the core and legs, which the lifter uses to help stabilize the weight.The lift begins with the lifter standing and the barbell on the anterior deltoids. The lifter then raises the barbell overhead by pressing the palms of the hands against the underside of the barbell.</p>",
             "equipment": [
-                1
+                1,
+                18,
+                17
             ],
             "creation_date": "2014-03-09",
             "category": 13,
@@ -4790,7 +4815,9 @@
             "creation_date": "2014-03-30",
             "category": 13,
             "uuid": "69f271a6-5408-49d9-8a3a-1f6088835f30",
-            "muscles": [],
+            "muscles": [
+                17
+            ],
             "license": 1,
             "name": "Rear Delt Raises"
         },
@@ -5494,7 +5521,8 @@
             "status": "2",
             "language": 2,
             "muscles_secondary": [
-                1
+                1,
+                19
             ],
             "description": "<p>Sit on bench. Grasp dumbbell between feet. Place back of upper arm to inner thigh. Lean into leg to raise elbow slightly.</p>",
             "equipment": [
@@ -6214,7 +6242,8 @@
             "uuid": "97d7eba2-681f-4b14-8e78-7d9b5865d336",
             "muscles": [
                 2,
-                9
+                9,
+                17
             ],
             "license": 2,
             "name": "Upright Row w/ Dumbbells"
@@ -7063,7 +7092,8 @@
             "muscles_secondary": [
                 1,
                 11,
-                13
+                13,
+                17
             ],
             "description": "<p>With dumbbells in hand, bend at the hip until hands hang just below the knees (similar to straight-legged-deadlift starting position). Keep upper body angle constant while contracting your lats to pull you ellbows back pinching the shoulder blades at the top. Try not to stand up with every rep, check hands go below knees on every rep.</p>",
             "equipment": [
