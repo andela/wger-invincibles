@@ -19,9 +19,9 @@ import sys
 import csv
 import uuid
 import random
-import django
 import datetime
 import argparse
+import django
 
 from django.db import IntegrityError
 from django.utils.text import slugify

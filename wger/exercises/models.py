@@ -77,6 +77,32 @@ class Muscle(models.Model):
         '''
         return False
 
+    def save(self, *args, **kwargs):
+        '''
+        Reset all cached infos
+        '''
+        super(Muscle, self).save(*args, **kwargs)
+
+        # Cached template fragments
+        for language in Language.objects.all():
+            delete_template_fragment_cache('muscle-overview', language.id)
+            delete_template_fragment_cache('exercise-overview', language.id)
+            delete_template_fragment_cache('exercise-overview-mobile',
+                                           language.id)
+            delete_template_fragment_cache('equipment-overview', language.id)
+
+    def delete(self, *args, **kwargs):
+        '''
+        Reset all cached infos
+        '''
+        for language in Language.objects.all():
+            delete_template_fragment_cache('muscle-overview', language.id)
+            delete_template_fragment_cache('exercise-overview', language.id)
+            delete_template_fragment_cache('execise-overview-mobile', language.id)
+            delete_template_fragment_cache('equipment-overview', language.id)
+
+        super(Muscle, self).delete(*args, **kwargs)
+
 
 @python_2_unicode_compatible
 class Equipment(models.Model):
