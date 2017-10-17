@@ -8,6 +8,3 @@
 # Development packages
 django-debug-toolbar
 coverage
-flake8
-autopep8
-autoflake
