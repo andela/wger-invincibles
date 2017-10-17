@@ -148,7 +148,8 @@ urlpatterns = i18n_patterns(
     url(r'^sitemap\.xml$',
         sitemap,
         {'sitemaps': sitemaps},
-        name='sitemap')
+        name='sitemap'),
+    url('', include('social_django.urls', namespace='social'))
 )
 
 #
