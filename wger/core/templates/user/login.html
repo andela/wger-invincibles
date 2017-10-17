@@ -33,4 +33,13 @@
         {% trans "Reset password" %}
     </a>
 </p>
+<p>
+    <a href="{% url 'social:begin' 'google-oauth2' %}">Google+</a>
+</p>
+<p>
+        <a href="{% url 'social:begin' 'facebook' %}">Facebook</a>
+</p>
+<p>
+    <a href="{% url 'social:begin' 'twitter' %}">Twitter</a>
+</p>
 {% endblock %}
