@@ -28,6 +28,12 @@ $(document).ready(function() {
             window.location.href = '/exercise/' + suggestion.data.id + '/view/'
         }
     });
+
+    $(function() {
+        $('#language_selector').change(function() {
+            this.form.submit();
+        });
+    });
 });
 </script>
 {% endblock %}
@@ -35,10 +41,13 @@ $(document).ready(function() {
 
 <!--
         Main Content
+        
+
+
 -->
 {% block content %}
 
-{% cache cache_timeout exercise-overview language.id %}
+{% cache 1 exercise-overview language.id %}
 {% regroup exercises by category as exercise_list %}
 <ul class="nav nav-tabs">
     {% for item in exercise_list %}
@@ -112,6 +121,16 @@ $(document).ready(function() {
            id="exercise-search"
            class="ajax-form-element form-control"
            placeholder="{% trans 'exercise name' %}">
+<br />
+<h4>{% trans "Language to display" %}</h4>
+<form action="{% url 'exercise:exercise:overview' %}" method="get">
+    <select name="lang" id="language_selector" class="form-control">
+      {% for language in all_languages %}
+      <option {% if language.short_name == shown_language %}selected {% endif %} value="{{ language.short_name }}">{% trans language.full_name %}</option>
+      {% endfor %}
+    </select> 
+</form>
+
 {% endblock %}
 
 
