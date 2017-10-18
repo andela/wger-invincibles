@@ -51,7 +51,8 @@ class StatusUserTestCase(WorkoutManagerTestCase):
         user.save()
         self.assertFalse(user.is_active)
 
-        response = self.client.get(reverse('core:user:activate', kwargs={'pk': user.pk}))
+        response = self.client.get(
+            reverse('core:user:activate', kwargs={'pk': user.pk}))
         user = User.objects.get(pk=2)
 
         self.assertIn(response.status_code, (302, 403))
@@ -93,7 +94,8 @@ class StatusUserTestCase(WorkoutManagerTestCase):
         user.save()
         self.assertTrue(user.is_active)
 
-        response = self.client.get(reverse('core:user:deactivate', kwargs={'pk': user.pk}))
+        response = self.client.get(
+            reverse('core:user:deactivate', kwargs={'pk': user.pk}))
         user = User.objects.get(pk=2)
 
         self.assertIn(response.status_code, (302, 403))
@@ -226,3 +228,61 @@ class UserDetailPageTestCase2(WorkoutManagerAccessTestCase):
                  'manager1',
                  'member1',
                  'member2')
+
+
+class DeactivateTrainerTestCase(WorkoutManagerTestCase):
+    '''
+    Test deactivating trainers
+    '''
+    deactivate_success = ('general_manager1',
+                          'general_manager2',
+                          'manager1',
+                          'manager2')
+
+    deactivate_fail = ('member1',
+                       'member2',
+                       'trainer2',
+                       'trainer3')
+
+    def deactivate_trainer(self, fail=False):
+        '''
+        Helper function to test deactivating users
+        '''
+        user = User.objects.get(pk=4)
+        user.is_active = True
+        user.save()
+        self.assertTrue(user.is_active)
+
+        response = self.client.get(
+            reverse('core:user:deactivate', kwargs={'pk': user.pk}))
+        user = User.objects.get(pk=4)
+
+        self.assertIn(response.status_code, (302, 403))
+        if fail:
+            self.assertTrue(user.is_active)
+        else:
+            self.assertFalse(user.is_active)
+
+    def test_deactivate_authorized(self):
+        '''
+        Tests deactivating a trainer as an administrator
+        '''
+        for username in self.deactivate_success:
+            self.user_login(username)
+            self.deactivate_trainer()
+            self.user_logout()
+
+    def test_deactivate_unauthorized(self):
+        '''
+        Tests deactivating a trainer as another logged in user
+        '''
+        for username in self.deactivate_fail:
+            self.user_login(username)
+            self.deactivate_trainer(fail=True)
+            self.user_logout()
+
+    def test_deactivate_logged_out(self):
+        '''
+        Tests deactivating a trainer a logged out user
+        '''
+        self.deactivate_trainer(fail=True)

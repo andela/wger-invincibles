@@ -340,6 +340,11 @@ class UserDeactivateView(LoginRequiredMixin,
                 and edit_user.userprofile.gym_id != request.user.userprofile.gym_id:
             return HttpResponseForbidden()
 
+        # A gym trainer can deactivate members but not other trainers
+        if (request.user.has_perm('gym.gym_trainer')
+                and edit_user.has_perm('gym.gym_trainer')):
+            return HttpResponseForbidden()
+
         return super(UserDeactivateView, self).dispatch(request, *args, **kwargs)
 
     def get_redirect_url(self, pk):
