@@ -16,7 +16,7 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'wger/database.sqlite',
+        'NAME': '/Users/allan/.local/share/wger/database.sqlite',
         'USER': '',
         'PASSWORD': '',
         'HOST': '',
@@ -39,6 +39,7 @@ SITE_URL = 'http://localhost:8000'
 
 # Path to uploaded files
 # Absolute filesystem path to the directory that will hold user-uploaded files.
+
 MEDIA_ROOT = '/Users/rossie/.local/share/wger/media'
 MEDIA_URL = '/media/'
 

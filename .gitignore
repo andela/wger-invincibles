@@ -59,7 +59,11 @@ target/
 
 # IDE
 .idea/
+.vscode/
 
 # External Libraries
 wger/core/static/bower_components
 node_modules
+
+# settings files
+settings*
