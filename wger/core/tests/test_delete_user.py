@@ -46,7 +46,8 @@ class DeleteUserTestCase(WorkoutManagerTestCase):
             self.assertEqual(User.objects.filter(username='test').count(), 1)
 
         # Correct user password
-        response = self.client.post(reverse('core:user:delete'), {'password': 'testtest'})
+        response = self.client.post(reverse('core:user:delete'), {
+                                    'password': 'testtest'})
         self.assertEqual(response.status_code, 302)
         if fail:
             self.assertEqual(User.objects.filter(username='test').count(), 1)
@@ -76,7 +77,8 @@ class DeleteUserByAdminTestCase(WorkoutManagerTestCase):
         '''
         Helper function
         '''
-        response = self.client.get(reverse('core:user:delete', kwargs={'user_pk': 2}))
+        response = self.client.get(
+            reverse('core:user:delete', kwargs={'user_pk': 2}))
         self.assertEqual(User.objects.filter(username='test').count(), 1)
         if fail:
             self.assertIn(response.status_code, (302, 403),
@@ -177,3 +179,119 @@ class DeleteUserByAdminTestCase(WorkoutManagerTestCase):
         Tests deleting the user account as an anonymous user
         '''
         self.delete_user(fail=True)
+
+
+class DeleteTrainerByAdminTestCase(WorkoutManagerTestCase):
+    '''
+    Tests deleting a trainer account by a gym administrator
+    '''
+
+    def delete_trainer(self, fail=False):
+        '''
+        Helper function
+        '''
+        response = self.client.get(
+            reverse('core:user:delete', kwargs={'user_pk': 4}))
+        self.assertEqual(User.objects.filter(username='trainer1').count(), 1)
+        if fail:
+            self.assertIn(response.status_code, (302, 403),
+                          'Unexpected status code for user {0}'.format(self.current_user))
+        else:
+            self.assertEqual(response.status_code, 200,
+                             'Unexpected status code for user {0}'.format(self.current_user))
+
+        # Wrong admin password
+        if not fail:
+            response = self.client.post(reverse('core:user:delete', kwargs={'user_pk': 4}),
+                                        {'password': 'blargh'})
+            self.assertEqual(response.status_code, 200)
+            self.assertEqual(User.objects.filter(
+                username='trainer1').count(), 1)
+
+        # Correct user password
+        response = self.client.post(reverse('core:user:delete', kwargs={'user_pk': 4}),
+                                    {'password': self.current_password})
+        if fail:
+            self.assertIn(response.status_code, (302, 403))
+            self.assertEqual(User.objects.filter(
+                username='trainer1').count(), 1)
+        else:
+            self.assertEqual(response.status_code, 302)
+            self.assertEqual(User.objects.filter(
+                username='trainer1').count(), 0)
+
+    def test_delete_trainer_manager(self):
+        '''
+        Tests deleting the user account as a gym manager
+        '''
+        self.user_login('manager1')
+        self.delete_trainer(fail=False)
+
+    def test_delete_trainer_manager2(self):
+        '''
+        Tests deleting the trainer account as a gym manager
+        '''
+        self.user_login('manager2')
+        self.delete_trainer(fail=False)
+
+    def test_delete_trainer_general_manager(self):
+        '''
+        Tests deleting the trainer account as a general manager
+        '''
+        self.user_login('general_manager1')
+        self.delete_trainer(fail=False)
+
+    def test_delete_trainer_general_manager2(self):
+        '''
+        Tests deleting the trainer account as a general manager
+        '''
+        self.user_login('general_manager2')
+        self.delete_trainer(fail=False)
+
+    def test_delete_trainer(self):
+        '''
+        Tests deleting the trainer account as a regular user
+        '''
+        self.user_login('test')
+        self.delete_trainer(fail=True)
+
+    def test_delete_trainer_trainer(self):
+        '''
+        Tests deleting the trainer account as a gym trainer
+        '''
+        self.user_login('trainer1')
+        self.delete_trainer(fail=True)
+
+    def test_delete_trainer_trainer2(self):
+        '''
+        Tests deleting the trainer account as a gym trainer
+        '''
+        self.user_login('trainer4')
+        self.delete_trainer(fail=True)
+
+    def test_delete_trainer_trainer_other(self):
+        '''
+        Tests deleting the trainer account as a gym trainer of another gym
+        '''
+        self.user_login('trainer4')
+        self.delete_trainer(fail=True)
+
+    def test_delete_trainer_manager_other(self):
+        '''
+        Tests deleting the trainer account as a gym manager of another gym
+        '''
+        self.user_login('manager3')
+        self.delete_trainer(fail=True)
+
+    def test_delete_trainer_member(self):
+        '''
+        Tests deleting the trainer account as a gym member
+        '''
+        self.user_login('member1')
+        self.delete_trainer(fail=True)
+
+    def test_delete_trainer_anonymous(self):
+        '''
+        Tests deleting the trainer account as an anonymous user
+        '''
+        self.delete_trainer(fail=True)
