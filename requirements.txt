@@ -30,3 +30,6 @@ django-cors-headers
 six
 whitenoise==3.3.1
 fitbit==0.3.0
+
+# Social Authentication
+social-auth-app-django
