@@ -33,3 +33,6 @@ fitbit==0.3.0
 
 # Social Authentication
 social-auth-app-django
+
+# tracebacks
+tblib
