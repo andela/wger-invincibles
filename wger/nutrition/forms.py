@@ -26,6 +26,7 @@ from wger.nutrition.models import (
     MealItem
 )
 from wger.utils.widgets import Html5NumberInput
+from wger.utils.fields import Html5TimeField
 
 
 logger = logging.getLogger(__name__)
@@ -113,6 +114,9 @@ class DailyCaloriesForm(forms.ModelForm):
                                              initial=0,
                                              required=False,
                                              widget=Html5NumberInput())
+    time = Html5TimeField(null=True,
+                          blank=True,
+                          verbose_name=_('Time (approx)'))
 
     class Meta:
         model = UserProfile
@@ -125,7 +129,9 @@ class MealItemForm(forms.ModelForm):
                                          required=False)
     ingredient = forms.ModelChoiceField(queryset=Ingredient.objects.all(),
                                         widget=forms.HiddenInput)
-
+    time = Html5TimeField(null=True,
+                          blank=True,
+                          verbose_name=_('Time (approx)'))
     class Meta:
         model = MealItem
         fields = '__all__'
