@@ -27,6 +27,10 @@ urlpatterns = [
         login_required(views.WeightAddView.as_view()),
         name='add'),
 
+url(r'^compare/$',
+        login_required(views.WeightCompareView.as_view()),
+        name='compare'),
+
     url(r'^(?P<pk>\d+)/edit/$',
         login_required(views.WeightUpdateView.as_view()),
         name='edit'),

@@ -30,6 +30,7 @@ from django.db.models import Min
 from django.db.models import Max
 from django.views.generic import CreateView
 from django.views.generic import UpdateView
+from django.views.generic import TemplateView
 
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
@@ -78,6 +79,8 @@ class WeightAddView(WgerFormMixin, CreateView):
         '''
         return reverse('weight:overview', kwargs={'username': self.object.user.username})
 
+class WeightCompareView(TemplateView):
+    template_name = 'compare.html'
 
 class WeightUpdateView(WgerFormMixin, UpdateView):
     '''
