@@ -245,8 +245,18 @@ class Exercise(AbstractSubmissionModel, models.Model):
     '''The item's license'''
 
     license_author = models.ForeignKey(Authors, 
-                                       verbose_name=_('Author'))
-    '''The author if it is not the uploader'''
+                                       verbose_name=_('Author'),
+                                       default=1,
+                                       help_text=_('Select the name of the author or the '
+                                                  'source. This is needed for some licenses '
+                                                  'e.g. the CC-BY-SA.'))
+    '''The author of the exercise'''
+
+    created_by_user = models.ForeignKey(User,
+                             verbose_name=_('Created by'),
+                             default=1,
+                             editable=False)
+    '''The user that submitted the exercise'''
 
     #
     # Django methods
@@ -338,8 +348,9 @@ class Exercise(AbstractSubmissionModel, models.Model):
         submitted exercises only)
         '''
         try:
-            user = User.objects.get(username=self.license_author)
+            user = User.objects.get(id=self.created_by_user.id)
         except User.DoesNotExist:
+            print('there is an error')
             return
         if self.license_author and user.email:
             translation.activate(user.userprofile.notification_language.short_name)
@@ -377,6 +388,7 @@ class Exercise(AbstractSubmissionModel, models.Model):
             mail.mail_admins(six.text_type(subject),
                              six.text_type(message),
                              fail_silently=True)
+            print('i am here')
 
 
 def exercise_image_upload_dir(instance, filename):
