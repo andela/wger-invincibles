@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% load i18n staticfiles wger_extras %}
+
+{#       #}
+{# Title #}
+{#       #}
+{% block title %}{% trans "Compare members" %}{% endblock %}
+
+{#        #}
+{# Header #}
+{#        #}
+{% block header %}
+<script src="{% static 'js/weight.js' %}"></script>
+{% endblock %}
+
+
+
+{#         #}
+{# Content #}
+{#         #}
+{% block content %}
+<div id="current-username" data-current-username="{{ owner_user.username }}"></div>
+
+
+{% if not min_date %}
+<p>
+    {% trans "There is no chart here because there are no weight entries." %}
+    {% trans "Use link to add one." %}
+</p>
+{% endif %}
+
+{% if user_name %}
+<p>
+    FitBit Data for:  Me
+</p>
+{% endif %}
+
+<div id="weight_diagram"></div>
+
+{% endblock %}
