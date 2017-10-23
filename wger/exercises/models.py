@@ -350,7 +350,6 @@ class Exercise(AbstractSubmissionModel, models.Model):
         try:
             user = User.objects.get(id=self.created_by_user.id)
         except User.DoesNotExist:
-            print('there is an error')
             return
         if self.license_author and user.email:
             translation.activate(user.userprofile.notification_language.short_name)
@@ -388,7 +387,6 @@ class Exercise(AbstractSubmissionModel, models.Model):
             mail.mail_admins(six.text_type(subject),
                              six.text_type(message),
                              fail_silently=True)
-            print('i am here')
 
 
 def exercise_image_upload_dir(instance, filename):
