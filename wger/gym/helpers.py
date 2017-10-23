@@ -15,6 +15,7 @@
 # You should have received a copy of the GNU Affero General Public License
 
 from wger.manager.models import WorkoutLog, WorkoutSession
+from wger.weight.models import WeightEntry
 
 
 def get_user_last_activity(user):
@@ -84,7 +85,9 @@ def get_permission_list(user):
 
 class UsersData:
     def __init__(self, userlist):
-        pass
-
-    def get_users_data(users_list):
-        pass
+        self.userslist = userlist
+        
+    def get_users_data(self):
+        for user in self.userslist:
+            user_weight = WeightEntry.objects.filter(user=user).order_by('-date')
+            print(user_weight)
