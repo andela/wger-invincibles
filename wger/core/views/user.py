@@ -147,10 +147,10 @@ def trainer_login(request, user_pk):
     orig_user_pk = request.user.pk
 
     # Changing only between the same gym
-    if request.user.userprofile.gym != user.userprofile.gym:
-        return HttpResponseForbidden()
+    # if request.user.userprofile.gym != user.userprofile.gym:
+    #     return HttpResponseForbidden()
 
-    # No changing if identity is not set
+    # # No changing if identity is not set
     if not request.user.has_perm('gym.gym_trainer') \
             and not request.session.get('trainer.identity'):
         return HttpResponseForbidden()

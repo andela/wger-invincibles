@@ -80,3 +80,11 @@ def get_permission_list(user):
         form_group_permission.append('manager')
 
     return form_group_permission
+
+
+class UsersData:
+    def __init__(self, userlist):
+        pass
+
+    def get_users_data(users_list):
+        pass
