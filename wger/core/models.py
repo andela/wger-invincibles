@@ -541,6 +541,36 @@ class DaysOfWeek(models.Model):
         '''
         return self.day_of_week
 
+@python_2_unicode_compatible
+class Authors(models.Model):
+    '''
+    Model for the authors of Exercises or the source of the exercise
+
+    This model is needed so that we can select the author or the source of an exercise from this model while
+    creating an exercise
+    '''
+
+    name = models.CharField(max_length=50,
+                            verbose_name=_('License Author'),
+                            help_text=_('Enter the name of the author or '
+                                                  'source here of an Exercise. This is needed for some licenses '
+                                                  'e.g. the CC-BY-SA.'))
+    '''
+    The license author or source of the exercise
+    '''
+
+    class Meta:
+        '''
+        Order by name
+        '''
+        ordering = ["name", ]
+
+    def __str__(self):
+        '''
+        Return a more human-readable representation
+        '''
+        return self.name
+
 
 @python_2_unicode_compatible
 class License(models.Model):
