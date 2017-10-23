@@ -216,9 +216,9 @@ class GymMemberListView(ListView):
         users_data.get_users_data()
         data = {"year": "2017-10-15", "sale": "176"}
         if request.is_ajax():
-            return Response(data)
+            return JsonResponse(users_data.get_users_data(), safe=False)
         allow_empty = self.get_allow_empty()
-        return JsonResponse(data)
+        return JsonResponse(users_data.get_users_data(), safe=False)
 
 
 class GymAddView(WgerFormMixin, LoginRequiredMixin, PermissionRequiredMixin, CreateView):

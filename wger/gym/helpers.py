@@ -16,6 +16,7 @@
 
 from wger.manager.models import WorkoutLog, WorkoutSession
 from wger.weight.models import WeightEntry
+from wger.core.api.serializers import UserprofileSerializer, UserSerializer, WeightEntrySerializer
 
 
 def get_user_last_activity(user):
@@ -88,6 +89,9 @@ class UsersData:
         self.userslist = userlist
         
     def get_users_data(self):
+        details = []
         for user in self.userslist:
             user_weight = WeightEntry.objects.filter(user=user).order_by('-date')
-            print(user_weight)
+            serialized = WeightEntrySerializer(user_weight, many=True)
+            details.append(serialized.data)
+        return details
