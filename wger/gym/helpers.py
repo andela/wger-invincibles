@@ -16,7 +16,7 @@
 
 from wger.manager.models import WorkoutLog, WorkoutSession
 from wger.weight.models import WeightEntry
-from wger.core.api.serializers import UserprofileSerializer, UserSerializer, WeightEntrySerializer
+from wger.core.api.serializers import WeightEntrySerializer
 
 
 def get_user_last_activity(user):

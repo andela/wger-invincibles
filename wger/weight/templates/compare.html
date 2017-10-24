@@ -4,7 +4,9 @@
 {#       #}
 {# Title #}
 {#       #}
-{% block title %}{% trans "Compare members" %}{% endblock %}
+{% block title %}{% trans "Compare members" %}
+
+{% endblock %}
 
 {#        #}
 {# Header #}
@@ -15,29 +17,30 @@
 {% endblock %}
 
 
-
 {#         #}
 {# Content #}
 {#         #}
 {% block content %}
+Select Gym
+<select id="select-gym">
+    {% for gym in object_list %}
+    <option value="{{ gym.id }}">{{gym}}</option>
+    {% endfor %}
+</select>
+<br>
 <div id="current-username" data-current-username="{{ owner_user.username }}"></div>
 
-
-{% if not min_date %}
-<p>
-    {% trans "There is no chart here because there are no weight entries." %}
-    {% trans "Use link to add one." %}
+<p id="users">
+    
 </p>
-{% endif %}
-
-{% if user_name %}
-<p>
-    FitBit Data for:  Me
-</p>
-{% endif %}
 
 <svg width="1000" height="700" id="weight_diagram"></svg>
 <script>
+    $('select').on('change', function() {
+     var gym_id = this.value;
+     fetchUsersData(gym_id);
+    })
+
     var colorArray = [
     'blue',
     'red',
@@ -45,11 +48,15 @@
     'yellow'
 ];
 //audioElement.setAttribute('src', textArray[randomNumber]);
+function fetchUsersData(gym_id){
     var data1 = [];
-    var jqxhr = $.getJSON( "http://localhost:8000/en/gym/2/compare-members", function(data) {
+    var jqxhr = $.getJSON( "http://127.0.0.1:8000/en/gym/"+gym_id+"/compare-members", function(data) {
+        
     $.each( data, function( key, val ) {
        for(i=0; i < val.length; i ++){
            val[i].date = new Date(val[i].date);
+           console.log(val[i].user);
+           $( "#users" ).html("<ul><li>"+val[i].user+"</li></ul>");
        }
        console.log("before################", val);
 
@@ -62,12 +69,7 @@
             })
             .attr('stroke-width', 2)
             .attr('fill', 'none');
-       console.log("after################", val);
-       vis.append("text")
-           .attr("dy", ".35em")
-		.attr("text-anchor", "start")
-		.style("fill", "red")
-		.text(val[0].user);
+            
     });
 })
   .done(function() {
@@ -116,12 +118,13 @@
                 return yScale(d.weight);
             })
             .interpolate("basis");
+}
 
 </script>
 <style> /* set the CSS */
 
 path {
-    /*stroke: steelblue;*/
+    stroke: steelblue;
     stroke-width: 2;
     fill: none;
 }
