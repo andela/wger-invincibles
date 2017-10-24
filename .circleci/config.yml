@@ -39,8 +39,8 @@ jobs:
             sudo apt-get install nodejs
             sudo apt-get install npm
 
-            invoke create-settings --settings-path ./settings.py --database-path ./database.sqlite
-            invoke bootstrap-wger --settings-path ./settings.py --no-start-server
+            invoke create_settings --settings-path ./settings.py --database-path ./database.sqlite
+            invoke bootstrap_wger --settings-path ./settings.py --no-start-server
       - save_cache:
           paths:
             - ./venv
