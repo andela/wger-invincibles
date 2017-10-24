@@ -153,7 +153,6 @@ TEMPLATES = [
                 'wger.utils.context_processor.processor',
 
                 # Django
-                'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.template.context_processors.debug',
                 'django.template.context_processors.i18n',
@@ -326,9 +325,6 @@ THUMBNAIL_ALIASES = {
 #
 # Django compressor
 #
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "bower_components/bootstrap/dist")
-]
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
 STATIC_URL = '/static/'
 
@@ -339,7 +335,6 @@ COMPRESS_CSS_FILTERS = (
     'compressor.filters.cssmin.rCSSMinFilter'
 )
 COMPRESS_URL = STATIC_URL
-COMPRESS_ROOT = STATIC_ROOT
 
 # BOWER binary
 if sys.platform.startswith('win32'):
