@@ -30,7 +30,16 @@
 
 
 {% block options %}
-<a href="{% url 'manager:workout:add' %}" class="btn btn-success btn-sm">
+
+<a href="{% url 'manager:workout:add' %}" class="btn btn-success btn-sm" >
     {% trans "Add workout" %}
 </a>
+<a href="{% url 'manager:workout:export_workout' %}" class="btn btn-info btn-sm" >
+        {% trans "Export workout" %}
+    </a>
+    <form method="post" enctype="multipart/form-data" action="{% url 'manager:workout:import_workout' %}">
+        {% csrf_token %}
+        <input type="file" name="myfile">
+        <button type="submit">Upload</button>
+      </form>
 {% endblock %}

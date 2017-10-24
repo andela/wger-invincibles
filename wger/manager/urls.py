@@ -46,6 +46,12 @@ patterns_log = [
 
 # sub patterns for workouts
 patterns_workout = [
+    url(r'^export_workout$',
+        workout.export_workout,
+        name='export_workout'),
+    url(r'^import_workout$',
+        workout.import_workout,
+        name='import_workout'),
     url(r'^overview$',
         workout.overview,
         name='overview'),

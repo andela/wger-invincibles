@@ -17,9 +17,11 @@
 import logging
 import uuid
 import datetime
+import json
 
-from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponseRedirect, HttpResponseForbidden
+from django.core import serializers
+from django.shortcuts import render, get_object_or_404, redirect
+from django.http import HttpResponseRedirect, HttpResponseForbidden, HttpResponse
 from django.template.context_processors import csrf
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.utils.translation import ugettext_lazy, ugettext as _
@@ -36,7 +38,8 @@ from wger.manager.models import (
     WorkoutSession,
     WorkoutLog,
     Schedule,
-    Day
+    Day,
+    Set
 )
 from wger.manager.forms import (
     WorkoutForm,
@@ -48,6 +51,7 @@ from wger.utils.generic_views import (
     WgerDeleteMixin
 )
 from wger.utils.helpers import make_token
+from wger.exercises.models import Exercise
 
 
 logger = logging.getLogger(__name__)
@@ -71,6 +75,71 @@ def overview(request):
 
     return render(request, 'workout/overview.html', template_data)
 
+@login_required
+def export_workout(request):
+    '''
+    Export workouts
+    '''
+
+    # Prepare the response headers
+
+    # Convert all workout data to CSV
+    workouts_obj = Workout.objects.filter(user=request.user)
+    workouts = json.loads(serializers.serialize('json', workouts_obj))
+    # Send the data to the browser
+    data = {'days' : [],
+            'workouts': workouts,
+            'sets': [],
+            'exercises': []}
+    for workout in workouts_obj:
+        days_obj = Day.objects.filter(training=workout)
+        days = json.loads(serializers.serialize('json', days_obj))
+        data['days'] = days
+        for day in days_obj:
+            sets_obj = Set.objects.filter(exerciseday=day.id)
+            sets = json.loads(serializers.serialize('json', sets_obj))
+            data['sets'] = sets
+            for one_set in sets_obj:
+                exercises_obj = one_set.exercises.all()
+                exercises = json.loads(serializers.serialize('json', exercises_obj))
+                data['exercises'] = exercises
+    all_data = [data]
+    response = HttpResponse(json.dumps(all_data), content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename=data.json'
+    response['Content-Length'] = len(response.content)
+    return response
+
+@login_required
+def import_workout(request):
+    '''
+    Import Workout
+    '''
+    if request.method == 'POST':
+        data = request.FILES['myfile']
+        data_import = json.load(data)
+        print("**************      ", type(data_import))
+        workout_list = []
+        for data_ in data_import:
+            workout = data_.get("workouts")
+            print("######   ", type(workout))
+            workout_list.append(workout)
+        print(workout_list)
+        print ("$$$$$$$$$$$$$$$$$",workout_list[0][0]['pk'])
+            # for data in data_['workouts']:
+            #     print('33333333' , data)
+            #     # print("><><><>", data['fields']['creation_date'])
+            #     workout = Workout(
+            #         creation_date=data['fields']['creation_date'],
+            #         comment=data['fields']['comment'],
+            #         user=request.user
+            #     )
+            #     workout.save()
+            #     day = Day(
+            #         description=data_['days']['fields']['description'],
+            #         training=workout
+            #     )
+            #     day.save()
+    return HttpResponseRedirect(reverse('manager:workout:overview'))
 
 def view(request, pk):
     '''
