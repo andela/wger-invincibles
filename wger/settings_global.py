@@ -326,6 +326,9 @@ THUMBNAIL_ALIASES = {
 #
 # Django compressor
 #
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "bower_components/bootstrap/dist")
+]
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
 STATIC_URL = '/static/'
 
