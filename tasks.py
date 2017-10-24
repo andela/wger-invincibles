@@ -241,6 +241,7 @@ def load_fixtures(context, settings_path=None):
     call_command("loaddata", path + "groups.json")
     call_command("loaddata", path + "users.json")
     call_command("loaddata", path + "licenses.json")
+    call_command("loaddata", path + "authors.json")
     call_command("loaddata", path + "days_of_week.json")
     call_command("loaddata", path + "setting_repetition_units.json")
     call_command("loaddata", path + "setting_weight_units.json")
@@ -259,7 +260,6 @@ def load_fixtures(context, settings_path=None):
     call_command("loaddata", path + "muscles.json")
     call_command("loaddata", path + "categories.json")
     call_command("loaddata", path + "exercises.json")
-    call_command("loaddata", path + "authors.json")
 
     # Nutrition
     path = os.path.join(current_dir, 'wger', 'nutrition', 'fixtures/')
