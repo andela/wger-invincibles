@@ -14,8 +14,19 @@
     {% trans 'Login' as submit_text %}
     {% render_form_fields form submit_text %}
 </form>
+<h4 class="col-md-offset-6"><b>{% trans "Or continue with"%}</b></h4>
+    <div class="col-md-6 col-md-offset-5 social-div">
+        <a class="btn btn-google social" href="{% url 'social:begin' 'google-oauth2' %}" style="margin: 0 10px;">
+           <span class="fa fa-google fa-2x"></span>
+        </a>
+        <a class="btn btn-facebook social" href="{% url 'social:begin' 'facebook' %}" style="margin: 0 10px;">
+            <span class="fa fa-facebook fa-2x"></span>
+        </a>
+        <a class="btn btn-twitter social" href="{% url 'social:begin' 'twitter' %}" style="margin: 0 10px;">
+            <span class="fa fa-twitter fa-2x"></span>
+        </a>
+    </div>
 {% endblock %}
-
 
 {% block sidebar %}
 <h4>{% trans "No account?" %}</h4>
@@ -32,5 +43,14 @@
         <span class="{% fa_class 'key' %}"></span>
         {% trans "Reset password" %}
     </a>
+</p>
+<p>
+    <a href="{% url 'social:begin' 'google-oauth2' %}">Google+</a>
+</p>
+<p>
+        <a href="{% url 'social:begin' 'facebook' %}">Facebook</a>
+</p>
+<p>
+    <a href="{% url 'social:begin' 'twitter' %}">Twitter</a>
 </p>
 {% endblock %}
