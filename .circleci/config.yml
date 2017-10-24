@@ -40,7 +40,6 @@ jobs:
             sudo apt-get install npm
 
             invoke create_settings --settings-path ./settings.py --database-path ./database.sqlite
-            invoke bootstrap_wger --settings-path ./settings.py --no-start-server
       - save_cache:
           paths:
             - ./venv
