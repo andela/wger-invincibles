@@ -10,7 +10,8 @@
 {# Header #}
 {#        #}
 {% block header %}
-<script src="{% static 'js/weight.js' %}"></script>
+<!--<script src="{% static 'js/weight.js' %}"></script>-->
+<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 {% endblock %}
 
 
@@ -35,6 +36,105 @@
 </p>
 {% endif %}
 
-<div id="weight_diagram"></div>
+<svg width="1000" height="700" id="weight_diagram"></svg>
+<script>
+    var colorArray = [
+    'blue',
+    'red',
+    'black',
+    'yellow'
+];
+//audioElement.setAttribute('src', textArray[randomNumber]);
+    var data1 = [];
+    var jqxhr = $.getJSON( "http://localhost:8000/en/gym/2/compare-members", function(data) {
+    $.each( data, function( key, val ) {
+       for(i=0; i < val.length; i ++){
+           val[i].date = new Date(val[i].date);
+       }
+       console.log("before################", val);
+
+       vis.append('svg:path')
+            .attr('d', lineGen(val))
+            .attr('stroke', function () {
+                var randomNumber = Math.floor(Math.random()*colorArray.length);
+                console.log(colorArray[randomNumber]);
+                return colorArray[randomNumber];
+            })
+            .attr('stroke-width', 2)
+            .attr('fill', 'none');
+       console.log("after################", val);
+       vis.append("text")
+           .attr("dy", ".35em")
+		.attr("text-anchor", "start")
+		.style("fill", "red")
+		.text(val[0].user);
+    });
+})
+  .done(function() {
+    console.log( "second success" );
+  })
+  .fail(function() {
+    console.log( "error" );
+  })
+  .always(function() {
+    console.log( "complete" );
+  });
+
+    var vis = d3.select("#weight_diagram"),
+            WIDTH = 1000,
+            HEIGHT = 400,
+            MARGINS = {
+                top: 20,
+                right: 20,
+                bottom: 20,
+                left: 40
+            };
+
+        var mindate = new Date('2017-10-01'),
+            maxdate = new Date('2017-10-31');
+
+        xScale = d3.time.scale().range([MARGINS.left, WIDTH - MARGINS.right]).domain([mindate, maxdate]);
+        yScale = d3.scale.linear().range([HEIGHT - MARGINS.top, MARGINS.bottom]).domain([30, 70]);
+        xAxis = d3.svg.axis()
+                .scale(xScale);
+
+            yAxis = d3.svg.axis()
+                .scale(yScale)
+                .orient("left");
+        vis.append("svg:g")
+            .attr("transform", "translate(0," + (HEIGHT - MARGINS.bottom) + ")")
+            .call(xAxis);
+        vis.append("svg:g")
+            .attr("transform", "translate(" + (MARGINS.left) + ",0)")
+            .call(yAxis);
+
+        var lineGen = d3.svg.line()
+            .x(function(d) {
+                return xScale(d.date);
+            })
+            .y(function(d) {
+                return yScale(d.weight);
+            })
+            .interpolate("basis");
+
+</script>
+<style> /* set the CSS */
+
+path {
+    /*stroke: steelblue;*/
+    stroke-width: 2;
+    fill: none;
+}
+
+.axis path,
+.axis line {
+    fill: none;
+    stroke: grey;
+    stroke-width: 1;
+    shape-rendering: crispEdges;
+}
+
+</style>
+
 
 {% endblock %}
