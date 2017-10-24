@@ -330,11 +330,12 @@ STATIC_ROOT = os.path.join(BASE_DIR, "static")
 STATIC_URL = '/static/'
 
 # The default is not DEBUG, override if needed
-# COMPRESS_ENABLED = True
+COMPRESS_ENABLED = True
 COMPRESS_CSS_FILTERS = (
     'compressor.filters.css_default.CssAbsoluteFilter',
     'compressor.filters.cssmin.rCSSMinFilter'
 )
+COMPRESS_URL = STATIC_URL
 COMPRESS_ROOT = STATIC_ROOT
 
 # BOWER binary
