@@ -61,7 +61,7 @@ from wger.utils.widgets import (
 )
 from wger.config.models import LanguageConfig
 from wger.weight.helpers import process_log_entries
-from wger.core.models import Language
+from wger.core.models import Language, Authors
 
 
 logger = logging.getLogger(__name__)
@@ -211,6 +211,7 @@ class ExercisesEditAddView(WgerFormMixin):
             muscles_secondary = ModelMultipleChoiceField(queryset=Muscle.objects.all(),
                                                          widget=TranslatedOriginalSelectMultiple(),
                                                          required=False)
+            license_author = ModelChoiceField(queryset=Authors.objects.all(), required=False)
 
             class Meta:
                 model = Exercise

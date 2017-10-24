@@ -34,7 +34,7 @@ from django.core.cache import cache
 from django.core.validators import MinLengthValidator
 from django.conf import settings
 
-from wger.core.models import Language
+from wger.core.models import Language, License, Authors
 from wger.utils.helpers import smart_capitalize
 from wger.utils.managers import SubmissionManager
 from wger.utils.models import AbstractLicenseModel, AbstractSubmissionModel
@@ -181,7 +181,7 @@ class ExerciseCategory(models.Model):
 
 
 @python_2_unicode_compatible
-class Exercise(AbstractSubmissionModel, AbstractLicenseModel, models.Model):
+class Exercise(AbstractSubmissionModel, models.Model):
     '''
     Model for an exercise
     '''
@@ -238,6 +238,25 @@ class Exercise(AbstractSubmissionModel, AbstractLicenseModel, models.Model):
     '''
     Globally unique ID, to identify the exercise across installations
     '''
+
+    license = models.ForeignKey(License,
+                                    verbose_name=_('License'),
+                                    default=2)
+    '''The item's license'''
+
+    license_author = models.ForeignKey(Authors, 
+                                       verbose_name=_('Author'),
+                                       default=1,
+                                       help_text=_('Select the name of the author or the '
+                                                  'source. This is needed for some licenses '
+                                                  'e.g. the CC-BY-SA.'))
+    '''The author of the exercise'''
+
+    created_by_user = models.ForeignKey(User,
+                             verbose_name=_('Created by'),
+                             default=1,
+                             editable=False)
+    '''The user that submitted the exercise'''
 
     #
     # Django methods
@@ -329,7 +348,7 @@ class Exercise(AbstractSubmissionModel, AbstractLicenseModel, models.Model):
         submitted exercises only)
         '''
         try:
-            user = User.objects.get(username=self.license_author)
+            user = User.objects.get(id=self.created_by_user.id)
         except User.DoesNotExist:
             return
         if self.license_author and user.email:

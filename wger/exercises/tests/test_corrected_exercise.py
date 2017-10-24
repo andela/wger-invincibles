@@ -33,6 +33,7 @@ class ExercisesCorrectionTestCase(WorkoutManagerTestCase):
                                     {'category': 3,
                                      'name_original': 'my test exercise',
                                      'license': 2,
+                                     'license_author': 1,
                                      'description': description,
                                      'muscles': [3]})
 

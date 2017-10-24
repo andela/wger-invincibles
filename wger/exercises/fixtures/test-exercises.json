@@ -53,6 +53,22 @@
     },
     {
         "pk": 1,
+        "fields": {
+          "name": "wger.de"
+    
+        },
+        "model": "core.authors"
+    },
+    {
+        "pk": 4,
+        "fields": {
+          "name": "WrmZ"
+    
+        },
+        "model": "core.authors"
+    },
+    {
+        "pk": 1,
         "model": "exercises.exercise",
         "fields": {
             "status": "2",
@@ -105,6 +121,7 @@
         "pk": 4,
         "model": "exercises.exercise",
         "fields": {
+            "license_author": 4,
             "status": "1",
             "category": 3,
             "language": 1,
@@ -112,7 +129,6 @@
                 1
             ],
             "description": "",
-            "license_author": "test",
             "name": "Pending exercise"
         }
     },
