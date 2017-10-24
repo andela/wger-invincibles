@@ -50,6 +50,7 @@ jobs:
           name: run tests
           command: |
             . venv/bin/activate
+            python manage.py collectstatic
             python manage.py test --parallel
 
       - store_artifacts:
