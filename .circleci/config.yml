@@ -9,6 +9,7 @@ jobs:
       # specify the version you desire here
       # use `-browsers` prefix for selenium tests, e.g. `3.6.1-browsers`
       - image: circleci/python:3.6.1
+      - image: circleci/node:6.11.3
 
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
@@ -34,7 +35,12 @@ jobs:
             . venv/bin/activate
             pip install -r requirements.txt
 
-            invoke create_settings --settings-path ./settings.py
+            sudo apt-get update
+            sudo apt-get install nodejs
+            sudo apt-get install npm
+
+            invoke create-settings --settings-path ./settings.py --database-path ./database.sqlite
+            invoke bootstrap-wger --settings-path ./settings.py --no-start-server
       - save_cache:
           paths:
             - ./venv
