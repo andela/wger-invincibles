@@ -16,6 +16,7 @@
 import csv
 import datetime
 import logging
+from rest_framework.response import Response
 
 from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
@@ -27,7 +28,8 @@ from django.core.urlresolvers import reverse, reverse_lazy
 from django.http.response import (
     HttpResponseForbidden,
     HttpResponse,
-    HttpResponseRedirect
+    HttpResponseRedirect,
+    JsonResponse
 )
 from django.shortcuts import render, get_object_or_404
 from django.utils.translation import ugettext as _
@@ -42,7 +44,8 @@ from django.views.generic import (
 from wger.gym.forms import GymUserAddForm, GymUserPermisssionForm
 from wger.gym.helpers import (
     is_any_gym_admin,
-    get_permission_list
+    get_permission_list,
+    UsersData,
 )
 from wger.gym.models import (
     Gym,
@@ -55,6 +58,7 @@ from wger.utils.generic_views import (
     WgerDeleteMixin,
     WgerMultiplePermissionRequiredMixin)
 from wger.utils.helpers import password_generator
+from wger.utils.permissions import UpdateOnlyPermission, WgerPermission
 
 
 logger = logging.getLogger(__name__)
@@ -152,6 +156,69 @@ class GymUserListView(LoginRequiredMixin, WgerMultiplePermissionRequiredMixin, L
         context['user_table'] = {'keys': [_('ID'), _('Username'), _('Name'), _('Last activity')],
                                  'users': context['object_list']['members']}
         return context
+
+    
+class GymMemberListView(ListView):
+    '''
+        Overview of all users for a specific gym
+        '''
+    model = User
+    
+    def get_queryset(self):
+        '''
+        Return a list with the users, not really a queryset.
+        '''
+        out = {'admins': [],
+               'active_admins': [],
+               'inactive_admins': [],
+               'members': []}
+
+        for u in Gym.objects.get_members(self.kwargs['pk']).select_related('usercache'):
+            out['members'].append({'obj': u,
+                                   'last_log': u.usercache.last_activity})
+
+        # admins list
+        for u in Gym.objects.get_admins(self.kwargs['pk']):
+            out['admins'].append({
+                'obj': u,
+                'perms': {
+                    'manage_gym': u.has_perm('gym.manage_gym'),
+                    'manage_gyms': u.has_perm('gym.manage_gyms'),
+                    'gym_trainer': u.has_perm('gym.gym_trainer'),
+                    'any_admin': is_any_gym_admin(u)
+                }
+            })
+            if u.is_active:
+                out['active_admins'].append({'obj': u,
+                                            'perms': {
+                                                'manage_gym': u.has_perm('gym.manage_gym'),
+                                                'manage_gyms': u.has_perm('gym.manage_gyms'),
+                                                'gym_trainer': u.has_perm('gym.gym_trainer'),
+                                                'any_admin': is_any_gym_admin(u)
+                                            }
+                })
+            else:
+                out['inactive_admins'].append({
+                    'obj': u,
+                    'perms': {
+                        'manage_gym': u.has_perm('gym.manage_gym'),
+                        'manage_gyms': u.has_perm('gym.manage_gyms'),
+                        'gym_trainer': u.has_perm('gym.gym_trainer'),
+                        'any_admin': is_any_gym_admin(u)
+                    }
+                })
+        return out
+    
+    def get(self, request, *args, **kwargs):
+        self.object_list = self.get_queryset()
+        gym_user_list = [users["obj"] for users in self.object_list.get("members")]
+        users_data = UsersData(gym_user_list)
+        users_data.get_users_data()
+        data = {"year": "2017-10-15", "sale": "176"}
+        if request.is_ajax():
+            return JsonResponse(users_data.get_users_data(), safe=False)
+        allow_empty = self.get_allow_empty()
+        return JsonResponse(users_data.get_users_data(), safe=False)
 
 
 class GymAddView(WgerFormMixin, LoginRequiredMixin, PermissionRequiredMixin, CreateView):

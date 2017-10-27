@@ -1,0 +1,143 @@
+{% extends "base.html" %}
+{% load i18n staticfiles wger_extras %}
+
+{#       #}
+{# Title #}
+{#       #}
+{% block title %}{% trans "Compare members" %}
+
+{% endblock %}
+
+{#        #}
+{# Header #}
+{#        #}
+{% block header %}
+<!--<script src="{% static 'js/weight.js' %}"></script>-->
+<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+{% endblock %}
+
+
+{#         #}
+{# Content #}
+{#         #}
+{% block content %}
+Select Gym
+<select id="select-gym">
+    {% for gym in object_list %}
+    <option value="{{ gym.id }}">{{gym}}</option>
+    {% endfor %}
+</select>
+<br>
+<div id="current-username" data-current-username="{{ owner_user.username }}"></div>
+
+<p id="users">
+    
+</p>
+
+<svg width="1000" height="700" id="weight_diagram"></svg>
+<script>
+    $('select').on('change', function() {
+     var gym_id = this.value;
+     fetchUsersData(gym_id);
+    })
+
+    var colorArray = [
+    'blue',
+    'red',
+    'black',
+    'yellow'
+];
+//audioElement.setAttribute('src', textArray[randomNumber]);
+function fetchUsersData(gym_id){
+    var data1 = [];
+    var jqxhr = $.getJSON( "http://127.0.0.1:8000/en/gym/"+gym_id+"/compare-members", function(data) {
+        
+    $.each( data, function( key, val ) {
+       for(i=0; i < val.length; i ++){
+           val[i].date = new Date(val[i].date);
+           console.log(val[i].user);
+           $( "#users" ).html("<ul><li>"+val[i].user+"</li></ul>");
+       }
+       console.log("before################", val);
+
+       vis.append('svg:path')
+            .attr('d', lineGen(val))
+            .attr('stroke', function () {
+                var randomNumber = Math.floor(Math.random()*colorArray.length);
+                console.log(colorArray[randomNumber]);
+                return colorArray[randomNumber];
+            })
+            .attr('stroke-width', 2)
+            .attr('fill', 'none');
+            
+    });
+})
+  .done(function() {
+    console.log( "second success" );
+  })
+  .fail(function() {
+    console.log( "error" );
+  })
+  .always(function() {
+    console.log( "complete" );
+  });
+
+    var vis = d3.select("#weight_diagram"),
+            WIDTH = 1000,
+            HEIGHT = 400,
+            MARGINS = {
+                top: 20,
+                right: 20,
+                bottom: 20,
+                left: 40
+            };
+
+        var mindate = new Date('2017-10-01'),
+            maxdate = new Date('2017-10-31');
+
+        xScale = d3.time.scale().range([MARGINS.left, WIDTH - MARGINS.right]).domain([mindate, maxdate]);
+        yScale = d3.scale.linear().range([HEIGHT - MARGINS.top, MARGINS.bottom]).domain([30, 70]);
+        xAxis = d3.svg.axis()
+                .scale(xScale);
+
+            yAxis = d3.svg.axis()
+                .scale(yScale)
+                .orient("left");
+        vis.append("svg:g")
+            .attr("transform", "translate(0," + (HEIGHT - MARGINS.bottom) + ")")
+            .call(xAxis);
+        vis.append("svg:g")
+            .attr("transform", "translate(" + (MARGINS.left) + ",0)")
+            .call(yAxis);
+
+        var lineGen = d3.svg.line()
+            .x(function(d) {
+                return xScale(d.date);
+            })
+            .y(function(d) {
+                return yScale(d.weight);
+            })
+            .interpolate("basis");
+}
+
+</script>
+<style> /* set the CSS */
+
+path {
+    stroke: steelblue;
+    stroke-width: 2;
+    fill: none;
+}
+
+.axis path,
+.axis line {
+    fill: none;
+    stroke: grey;
+    stroke-width: 1;
+    shape-rendering: crispEdges;
+}
+
+</style>
+
+
+{% endblock %}

@@ -15,6 +15,8 @@
 # You should have received a copy of the GNU Affero General Public License
 
 from wger.manager.models import WorkoutLog, WorkoutSession
+from wger.weight.models import WeightEntry
+from wger.core.api.serializers import WeightEntrySerializer
 
 
 def get_user_last_activity(user):
@@ -80,3 +82,16 @@ def get_permission_list(user):
         form_group_permission.append('manager')
 
     return form_group_permission
+
+
+class UsersData:
+    def __init__(self, userlist):
+        self.userslist = userlist
+        
+    def get_users_data(self):
+        details = []
+        for user in self.userslist:
+            user_weight = WeightEntry.objects.filter(user=user).order_by('-date')
+            serialized = WeightEntrySerializer(user_weight, many=True)
+            details.append(serialized.data)
+        return details
